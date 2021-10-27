@@ -68,6 +68,8 @@ int	good_map(t_data *data)
 				return (FAIL);
 			y++;
 		}
+		if (data->map.map[x][y - 1] != '1')
+			return (FAIL);
 		if (y != data->map.grid_width)
 			return (error(FAIL, "map are not rectangle"));
 		x++;
@@ -107,9 +109,12 @@ int	load_map(t_data *data, void *file)
 	data->map.map = malloc(sizeof(char *) * size);
 	if (!data->map.map)
 		return (error(FAIL, "error malloc the map 2d"));
-	if (fill_map(data, file) == 0)
+	if (fill_map(data, file, 1, 0) == 0)
 		return (FAIL);
 	if (!good_map(data))
+	{
+		free_tab_two_d(data->map.map);
 		return (error(FAIL, "Not a good map"));
+	}
 	return (SUCCESS);
 }

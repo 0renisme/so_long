@@ -6,7 +6,7 @@
 /*   By: orfreoua <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 14:47:28 by orfreoua          #+#    #+#             */
-/*   Updated: 2021/10/24 14:49:48 by orfreoua         ###   ########.fr       */
+/*   Updated: 2021/10/26 16:38:04 by orfreoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	init_data(t_data *data)
 void	so_long_loop(t_data *data)
 {	
 	draw_map(data);
-	mlx_put_image_to_window(data->mlx.init, data->mlx.win,
-		data->mlx.img, 0, 0);
+	mlx_loop_hook(data->mlx.init, update, data);
 	mlx_hook(data->mlx.win, 2, 1L << 0, key_hook, data);
+	mlx_hook(data->mlx.win, 33, 1L << 5, free_all, data);
 	mlx_loop(data->mlx.init);
 }
 
@@ -41,11 +41,9 @@ void	load_game(t_data *data)
 			data->map.grid_width * 64, data->map.grid_height * 64);
 	data->mlx.addr = mlx_get_data_addr(data->mlx.img, &data->mlx.bits_per_pixel,
 			&data->mlx.line_length, &data->mlx.endian);
-	init_floor(data);
-	init_wall(data);
-	init_player(data);
-	init_collectibles(data);
-	init_exits(data);
+	init_textures(data);
+	if (data->bonus.on)
+		bonus(data);
 	so_long_loop(data);
 	mlx_loop(data->mlx.init);
 }
@@ -56,6 +54,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (error(FAIL, "Need map!"));
+	data.bonus.on = 0;
 	init_data(&data);
 	if (!load_map(&data, argv[1]))
 		return (FAIL);

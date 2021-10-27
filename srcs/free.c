@@ -6,7 +6,7 @@
 /*   By: orfreoua <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 15:09:53 by orfreoua          #+#    #+#             */
-/*   Updated: 2021/10/24 15:12:00 by orfreoua         ###   ########.fr       */
+/*   Updated: 2021/10/26 11:51:08 by orfreoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ void	close_windows(t_data *data)
 	exit (0);
 }
 
-void	free_all(t_data *data)
+int	free_all(t_data *data)
 {
 	free_tab_two_d(data->map.map);
 	close_windows(data);
+	return (0);
 }

@@ -41,6 +41,8 @@ int	size_of_map(void *file)
 	int		ret;
 
 	fd = open(file, O_RDONLY);
+	if (fd <= 0)
+		return (FAIL);
 	size = 0;
 	ret = 1;
 	while (ret > 0)

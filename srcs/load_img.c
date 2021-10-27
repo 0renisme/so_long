@@ -12,59 +12,36 @@
 
 #include "../header/so_long.h"
 
-t_screen	load_image(void *mlx, char *path)
+t_screen	load_image(void *mlx, char *path, t_data *data)
 {
 	t_screen	screen;
 
 	screen.img = mlx_xpm_file_to_image(mlx, path,
 			&(screen.width), &(screen.height));
 	if (!screen.img)
-		return (screen);
+	{
+		error(FAIL, "Error during image loading.");
+		free_all(data);
+	}
 	screen.addr = mlx_get_data_addr(screen.img, &screen.bits_per_pixel,
 			&screen.line_length, &screen.endian);
 	return (screen);
 }
 
-void	init_collectibles(t_data *data)
+void	init_textures(t_data *data)
 {
+	data->player.right1 = load_image(data->mlx.init,
+			"assets/textures/mario1.xpm", data);
+	data->player.right2 = load_image(data->mlx.init,
+			"assets/textures/mario2.xpm", data);
+	data->player.right3 = load_image(data->mlx.init,
+			"assets/textures/mario3.xpm", data);
 	data->collectible.screen_c = load_image(data->mlx.init,
-			"assets/textures/piece.xpm");
-	if (!data->collectible.screen_c.img)
-	{
-		error(FAIL, "Error during image loading.");
-		free_all(data);
-	}
-}
-
-void	init_exits(t_data *data)
-{
+			"assets/textures/piece.xpm", data);
 	data->exit.screen_e = load_image(data->mlx.init,
-			"assets/textures/flag.xpm");
-	if (!(data->exit.screen_e.img))
-	{
-		error(FAIL, "Error during image loading.");
-		free_all(data);
-	}
-}
-
-void	init_wall(t_data *data)
-{
+			"assets/textures/flag.xpm", data);
 	data->wall = load_image(data->mlx.init,
-			"assets/textures/block.xpm");
-	if (!data->wall.img)
-	{
-		error(FAIL, "Error during image loading.");
-		free_all(data);
-	}
-}
-
-void	init_floor(t_data *data)
-{
+			"assets/textures/block.xpm", data);
 	data->floor = load_image(data->mlx.init,
-			"assets/textures/blue.xpm");
-	if (!data->floor.img)
-	{
-		error(FAIL, "Error during image loading.");
-		free_all(data);
-	}
+			"assets/textures/blue.xpm", data);
 }

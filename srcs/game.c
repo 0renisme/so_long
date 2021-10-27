@@ -12,16 +12,6 @@
 
 #include "../header/so_long.h"
 
-void	display_nb_moves(t_data *data)
-{
-	data->moves_ascii = ft_itoa(data->shiffting);
-	if (!data->moves_ascii)
-		free_all(data);
-	mlx_string_put(data->mlx.init, data->mlx.win, 20, 20, 4040404,
-		data->moves_ascii);
-	ft_free(data->moves_ascii);
-}
-
 int	is_collectible(t_data *data, int x, int y)
 {
 	if (data->map.map[x][y] == 'C')
@@ -32,9 +22,22 @@ int	is_collectible(t_data *data, int x, int y)
 	}
 	if (data->map.map[x][y] == 'E' && data->collectible.nb_c == 0)
 	{
-		close_windows(data);
+		printf(BLUE"____ ____ ____ ___  ____ ____ _  _ ____ \n");
+		printf(BLUE"| __ |  | |  | |  \\ | __ |__| |\\/| |___\n");
+		printf(BLUE"|__] |__| |__| |__/ |__] |  | |  | |___\n");
+		printf("\n"NORMAL);
+		free_all(data);
 		exit(0);
 	}
+	return (0);
+}
+
+int	update(t_data *data)
+{
+	data->time++;
+	if (data->time >= 300)
+		data->time = 0;
+	draw_map(data);
 	return (0);
 }
 
@@ -58,10 +61,6 @@ int	key_hook(int key, t_data *data)
 		return (SUCCESS);
 	data->shiffting++;
 	is_collectible(data, data->player.pos.x, data->player.pos.y);
-	data->time++;
 	printf("%d\n", data->shiffting);
-	if (BONUS)
-		display_nb_moves(data);
-	draw_map(data);
 	return (SUCCESS);
 }

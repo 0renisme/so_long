@@ -12,15 +12,13 @@
 
 #include "../header/so_long.h"
 
-int	fill_map(t_data *data, void *file)
+int	fill_map(t_data *data, void *file, int ret, int i)
 {
 	int	fd;
-	int	ret;
-	int	i;
 
 	fd = open(file, O_RDONLY);
-	ret = 1;
-	i = 0;
+	if (fd <= 0)
+		return (FAIL);
 	while (ret > 0)
 	{
 		ret = get_next_line(fd, &data->map.map[i], 1);
@@ -38,6 +36,7 @@ int	fill_map(t_data *data, void *file)
 		return (error(FAIL, "error with get_next_line"));
 	}
 	data->map.map[i] = 0;
+	close(fd);
 	return (SUCCESS);
 }
 
